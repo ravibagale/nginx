@@ -1,0 +1,22 @@
+
+
+server {
+    listen 80;
+    listen [::]:80;
+    index index.html;
+    root /var/www/md-alluminio;    #This is the path for the frontend folder
+    server_name 157.230.109.19;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass http://localhost:8000;  # Adjust the port if your Laravel backend is running on a different port
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
